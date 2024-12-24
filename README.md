@@ -3,15 +3,18 @@
 ## 1.1. Python 3
 
 The project is developed in Python. Ensure you have **Python 3** installed (e.g., 3.11 or 3.12). On macOS:
-`python3 --version`
+```bash
+python3 --version
+```
 
 ## 1.2. Install OpenCV & Contribution Modules
 
 We need the following contribution modules for CSRT tracking:
-`pip3 install opencv-python opencv-contrib-python`
+```bash
+pip3 install opencv-python opencv-contrib-python
+```
 
 Where:
-
 - **opencv-python**:  
   - This package contains the **core** functionalities of OpenCV.  
   - It includes many of the built-in modules (image I/O, transformations, basic image processing routines, etc.).
@@ -31,35 +34,47 @@ Next, we need **PyTorch** because that’s the deep learning framework used by Y
 
 
 Adjust the exact command for your system, e.g., if you have CPU-only:
-`pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu`
+```bash
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu`
+```
 
 Or if you have a GPU on Linux:
-`pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu118`
+```bash
+pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu118
+```
 
 ## 1.4. Clone YOLOv5 / Install YOLOv5 Requirements
 
 At this point, we can clone the **Ultralytics YOLOv5** repository and install it.
-`git clone https://github.com/ultralytics/yolov5.git cd yolov5 pip3 install -r requirements.txt`
+```bash
+git clone https://github.com/ultralytics/yolov5.git cd yolov5 pip3 install -r requirements.txt
+```
 
 ## 1.5. Install LabelImg
 
 Next, we install **LabelImg** ([HumanSignal/labelImg](https://github.com/HumanSignal/labelImg)) to draw bounding boxes around the character in each screenshot and generate annotation files:
-`pip3 install pyqt5 lxml git clone https://github.com/HumanSignal/labelImg.git
+```bash
+pip3 install pyqt5 lxml git clone https://github.com/HumanSignal/labelImg.git
 cd labelImg
 make qt5py3
-python3 labelImg.py`
+python3 labelImg.py
+```
 
 
 ## 1.6. Comet ML
 We also want to log experiment metrics to **Comet ML** ([comet.com](https://www.comet.com/)). The first step is to head to Comet ML’s site, create a free account, and generate an API key as well as a new project:
-`pip3 install comet-ml`
+```bash
+pip3 install comet-ml
+```
 
 ---
 
 # 2. Create the Dataset
 
 Now, we’re going to create the dataset we’ll later use to train our YOLOv5 model to detect the character.
-`cd labelImg python3 labelImg.py`
+```bash
+cd labelImg python3 labelImg.py
+```
 
 
 Once opened, we need to open the directory containing the character screenshots we intend to use for training and validation. Ensure **YOLO** file format is selected. Then, create rectangular boxes around the character and assign the label (e.g., `"character"`). This will generate `.txt` annotations for each image.
@@ -85,15 +100,19 @@ By default, LabelImg might ship with multiple classes. Ensure `"character"` is t
 
 At this stage, we’re going to train the YOLOv5 model to recognize the character ([Ultralytics YOLOv5 docs](https://docs.ultralytics.com)).
 
-1. **Go to YOLOv5 Directory**  
-`cd yolov5`
+1. **Go to YOLOv5 Directory**
+```bash
+cd yolov5
+```
 
 
-2. **Train Command** (using medium model `yolov5m.pt`):  
-`python3 train.py --img 640 --batch 8 --epochs 50
+3. **Train Command** (using medium model `yolov5m.pt`):  
+```bash
+python3 train.py --img 640 --batch 8 --epochs 50
 --data data.yaml
 --weights yolov5m.pt
---name character-detector`
+--name character-detector
+```
 
 - `--img 640`: each image is resized to 640×640.  
 - `--batch 8`: adjust based on your hardware.  
